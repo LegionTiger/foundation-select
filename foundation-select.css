@@ -2,7 +2,7 @@
   display: inline-block;
   margin: 0;
   position:relative;
-  min-width: 250px;
+  min-width: 200px;
 }
 
 .custom-dropdown-button {
@@ -17,7 +17,6 @@
   color: rgba(0, 0, 0, 0.75);
   line-height: normal;
   border-radius: 0;
-  height: 2.3125rem;
   width: 100%;
   display: block;
 }
@@ -63,7 +62,7 @@
 }
 
 .custom-dropdown-options li.selected:after {
-  content: '✓';
+  content: 'âœ“';
   float: right;
 }
 .custom-dropdown-options:before, .custom-dropdown-options:after {
