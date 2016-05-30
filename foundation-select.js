@@ -19,7 +19,7 @@
           selectPrompt = '<span class="default-label">' + select.data('prompt') + '</span>';
           options = '<li class="disabled">' + selectPrompt + '</li>';
         } else {
-          selectPrompt = 'Velg ...';
+          selectPrompt = 'Choose ...';
         }
         selectPrompt = '';
         scounter = 0;
@@ -36,7 +36,7 @@
           selected = '';
         });
         if(scounter>3)
-        	selectPrompt = scounter + " av " + select.find('option').length + " valgt";
+        	selectPrompt = scounter + " of " + select.find('option').length + " chosen";
         if(scounter==3)
         	sheight = '4.125rem';
         else if(scounter==2)
@@ -64,7 +64,7 @@
     value = $(this).data('value');
     totalOptions = dropdown.find('li').not('.disabled').length;
     origDropdown = $(dropdown.data('orig-select'));
-    prompt = origDropdown.data('prompt') ? origDropdown.data('prompt') : 'Velg ...';
+    prompt = origDropdown.data('prompt') ? origDropdown.data('prompt') : 'Choose ...';
     if (multiple && $(this).data('value') != "") {
       $(this).toggleClass('selected');
       selectedOptions = [];
@@ -78,7 +78,7 @@
       if (selectedOptions.length) {
         if (selectedOptions.length > 3) {
           dropdown.find('.custom-dropdown-button').css({"height": "2.125rem", "width": "200px"});
-          dropdown.find('.custom-dropdown-button').html(selectedOptions.length + ' av ' + totalOptions + ' valgt');
+          dropdown.find('.custom-dropdown-button').html(selectedOptions.length + ' of ' + totalOptions + ' chosen');
         }else{
           if (selectedOptions.length == 3)
             dropdown.find('.custom-dropdown-button').css({"height": "4.125rem", "width": "200px"});
@@ -119,7 +119,7 @@
             }
           });
           if (prompt == '') {
-            prompt = 'Velg ...';
+            prompt = 'Choose ...';
           }
         }
         dropdown.find('.custom-dropdown-button').html(prompt);
