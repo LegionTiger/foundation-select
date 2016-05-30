@@ -12,19 +12,22 @@
         translateClasses = '';
         select = $(this);
         selectId = select.attr('id');
-        multiple = false;
-        multiple = select.prop('multiple') ? true : false;
+        multiple = true;
+        //multiple = select.prop('multiple') ? true : false;
         options = '';
         if (select.data('prompt')) {
           selectPrompt = '<span class="default-label">' + select.data('prompt') + '</span>';
           options = '<li class="disabled">' + selectPrompt + '</li>';
         } else {
-          selectPrompt = 'Choose...';
+          selectPrompt = 'Velg ...';
         }
+        selectPrompt = '';
+        scounter = 0;
         select.find('option').each( function () {
           if ($(this).attr('selected')) {
+        	scounter ++;
             selected = 'selected';
-            selectPrompt = "<div class='" + $(this).attr('class') + "'>" + $(this).html() + "</div>";
+            selectPrompt = selectPrompt + "<div class='" + $(this).attr('class') + "'>" + $(this).html() + "</div>";
           }
           if( $(this).attr('class') ) {
             translateClasses = $(this).attr('class') + ' ';
@@ -32,7 +35,15 @@
           options += '<li data-value="' + this.value + '" class="' + translateClasses + selected + '"><span class="option-title">' + $(this).html() + '</span></li>';
           selected = '';
         });
-        newButton = '<div class="custom-dropdown-area" data-orig-select="#' + selectId + '"' + (multiple ? ' data-multiple="true"' : '') + '><a href="#" data-dropdown="select-' + selectId + '" class="custom-dropdown-button">' + selectPrompt + '</a> \
+        if(scounter>3)
+        	selectPrompt = scounter + " av " + select.find('option').length + " valgt";
+        if(scounter==3)
+        	sheight = '4.125rem';
+        else if(scounter==2)
+        	sheight = '3rem';
+        else
+        	sheight = '2.125rem';
+        newButton = '<div class="custom-dropdown-area" data-orig-select="#' + selectId + '"' + (multiple ? ' data-multiple="true"' : '') + '><a href="#" data-dropdown="select-' + selectId + '" style="height:' + sheight + '" class="custom-dropdown-button">' + selectPrompt + '</a> \
         <ul id="select-' + selectId + '" class="f-dropdown custom-dropdown-options" data-dropdown-content> \
           ' + options + ' \
         </ul></div>';
@@ -53,8 +64,8 @@
     value = $(this).data('value');
     totalOptions = dropdown.find('li').not('.disabled').length;
     origDropdown = $(dropdown.data('orig-select'));
-    prompt = origDropdown.data('prompt') ? origDropdown.data('prompt') : 'Choose...';
-    if (multiple) {
+    prompt = origDropdown.data('prompt') ? origDropdown.data('prompt') : 'Velg ...';
+    if (multiple && $(this).data('value') != "") {
       $(this).toggleClass('selected');
       selectedOptions = [];
       selectedTitles = [];
@@ -63,16 +74,26 @@
         selectedTitles.push($(this).find('.option-title').html());
       });
       origDropdown.val(selectedOptions).change();
+      dropdown.find('li').first().removeClass('selected');
       if (selectedOptions.length) {
-        if (selectedOptions.length > 2) {
-          dropdown.find('.custom-dropdown-button').html(selectedOptions.length + ' of ' + totalOptions + ' selected');
+        if (selectedOptions.length > 3) {
+          dropdown.find('.custom-dropdown-button').css({"height": "2.125rem", "width": "200px"});
+          dropdown.find('.custom-dropdown-button').html(selectedOptions.length + ' av ' + totalOptions + ' valgt');
         }else{
+          if (selectedOptions.length == 3)
+            dropdown.find('.custom-dropdown-button').css({"height": "4.125rem", "width": "200px"});
+          else if (selectedOptions.length == 2)
+            dropdown.find('.custom-dropdown-button').css({"height": "3rem", "width": "200px"});
+          else
+            dropdown.find('.custom-dropdown-button').css({"height": "2.125rem", "width": "200px"});
           dropdown.find('.custom-dropdown-button').html(selectedTitles.join(', '));
         }
       }else{
+        dropdown.find('.custom-dropdown-button').css({"height": "2.125rem", "width": "200px"});
         dropdown.find('.custom-dropdown-button').html(prompt);
       }
     }else{
+      dropdown.find('.custom-dropdown-button').css({"height": "2.125rem", "width": "200px"});
       dropdown.find('li').removeClass('selected');
       Foundation.libs.dropdown.close($('#'+dropdown.find('ul').attr('id')));
       origDropdown.val(value).change();
@@ -98,7 +119,7 @@
             }
           });
           if (prompt == '') {
-            prompt = 'Choose...';
+            prompt = 'Velg ...';
           }
         }
         dropdown.find('.custom-dropdown-button').html(prompt);
